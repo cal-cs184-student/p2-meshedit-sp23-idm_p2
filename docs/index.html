@@ -41,7 +41,7 @@
 
 <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2018</h1>
 <h1 align="middle">Project 2: Mesh Edit</h1>
-<h2 align="middle">YOUR NAME</h2>
+<h2 align="middle">Puyuan Yi, Haoda Li</h2>
 
 <br><br>
 
@@ -63,7 +63,16 @@
   Briefly explain de Casteljau's algorithm and how you implemented it in order to evaluate Bezier curves.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    A Bezier curve is a parametric curve that is defined by a set of control points.
+    By creating a blending function, we can create the Bezier curve by utilizing the given control points.
+    De Casteljau's algorithm is a recursive algorithm used to evaluate Bezier curves.
+    The de Casteljau's algorithm works by calculating the next step's control points of the curve by a certain point t [0 - 1].
+    This is done recursively until we just get our final single points.
+    The end result is the point on the Bezier curve that corresponds to the parameter t.
+    In this assignment, we implement a function named <b>evaluateStep</b>. The function's initial parameters are  a set of control points
+    and a value of t. We can then split the control points into two groups at t and apply the algorithm recursively to each group.
+    We keep splitting and applying the algorithm until we get the final point on the Bezier curve that corresponds to t. The vector calculation
+    is based on <b>CGL vectors library</b>.
 </p>
 <br>
 
@@ -71,12 +80,11 @@
 <b>
   Take a look at the provided .bzc files and create your own Bezier curve with 6 control points of your choosing. Use this Bezier curve for your screenshots below.
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
+
 <!-- Example of including a single figure -->
 <div align="middle">
-  <img src="images/your_file.png" align="middle" width="50%">
+    <img src="images/p1/pic1.png" align="middle" width="50%" />
+    <figcaption>Our curve and control points</figcaption>
 </div>
 <br>
 
@@ -88,29 +96,29 @@
   <table style="width:100%">
     <tr align="center">
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+        <img src="images/p1/level0.png" align="middle" width="400px"/>
         <figcaption>Level 0</figcaption>
       </td>
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+        <img src="images/p1/level1.png" align="middle" width="400px"/>
         <figcaption>Level 1</figcaption>
       </td>
     </tr>
     <br>
     <tr align="center">
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+        <img src="images/p1/level2.png" align="middle" width="400px"/>
         <figcaption>Level 2</figcaption>
       </td>
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+        <img src="images/p1/level3.png" align="middle" width="400px"/>
         <figcaption>Level 3</figcaption>
       </td>
     </tr>
     <br>
     <tr align="center">
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+        <img src="images/p1/level4.png" align="middle" width="400px"/>
         <figcaption>Level 4</figcaption>
       </td>
     </tr>
@@ -122,9 +130,12 @@
 <b>
   Show a screenshot of a slightly different Bezier curve by moving the original control points around and modifying the parameter \(t\) via mouse scrolling.
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>  
+<!-- Example of including a single figure -->
+<div align="middle">
+    <img src="images/p1/change.png" align="middle" width="50%" />
+    <figcaption>Change control points and parameter t</figcaption>
+</div>
+<br> 
 <br>
 
 
@@ -133,7 +144,13 @@
   Briefly explain how de Casteljau algorithm extends to Bezier surfaces and how you implemented it in order to evaluate Bezier surfaces.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    The algorithm for evaluating a Bezier surface is similar to the algorithm for evaluating a Bezier curve.
+    The main difference is that instead of linearly blending between adjacent control points,
+    we blend between control points along both the u and v directions of the surface. That means we first do one dimension Bezier curve
+    evaluation using parameter u for each row, then we use the points generated from each row to run the de Casteljau algorithm based
+    on parameter v.
+    How we implement it: We first change our part one function from 2D to 3D, then we run the function recursively until it provides us
+    with a single point. Finally, we leverage n single points (generated from n rows) and do the calculation again.
 </p>
 <br>
 
@@ -141,9 +158,11 @@
 <b>
   Show a screenshot of bez/teapot.bez (not .dae) evaluated by your implementation.
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
+<!-- Example of including a single figure -->
+<div align="middle">
+    <img src="images/p2/res.png" align="middle" width="50%" />
+    <figcaption>Our generated teapot</figcaption>
+</div>
 <br>
 
 

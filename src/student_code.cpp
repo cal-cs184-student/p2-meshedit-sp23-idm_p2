@@ -16,7 +16,23 @@ namespace CGL
   std::vector<Vector2D> BezierCurve::evaluateStep(std::vector<Vector2D> const &points)
   { 
     // TODO Part 1.
-    return std::vector<Vector2D>();
+    std::vector<Vector2D> intermediate_points = {};
+    Vector2D temp;
+    for (int i = 0; i < points.size(); i++) {
+        // do something with myVec[i]
+        if (i == 0)
+        {
+            temp = points[i];
+            continue;
+        }
+        else
+        {
+            Vector2D new_points = (1 - t) * temp + t * points[i];
+            intermediate_points.push_back(new_points);
+            temp = points[i];
+        }
+    }
+    return intermediate_points;
   }
 
   /**
@@ -30,7 +46,23 @@ namespace CGL
   std::vector<Vector3D> BezierPatch::evaluateStep(std::vector<Vector3D> const &points, double t) const
   {
     // TODO Part 2.
-    return std::vector<Vector3D>();
+      // totally the same as the last function
+      std::vector<Vector3D> intermediate_points = {};
+      Vector3D temp;
+      for (int i = 0; i < points.size(); i++) {
+          if (i == 0)
+          {
+              temp = points[i];
+              continue;
+          }
+          else
+          {
+              Vector3D new_points = (1 - t) * temp + t * points[i];
+              intermediate_points.push_back(new_points);
+              temp = points[i];
+          }
+      }
+      return intermediate_points;
   }
 
   /**
@@ -43,7 +75,15 @@ namespace CGL
   Vector3D BezierPatch::evaluate1D(std::vector<Vector3D> const &points, double t) const
   {
     // TODO Part 2.
-    return Vector3D();
+      std::vector<Vector3D> intermediate_points = points;
+      Vector3D res;
+      while (evaluateStep(intermediate_points, t).size() > 1)
+      {
+          intermediate_points = evaluateStep(intermediate_points, t);
+      }
+      intermediate_points = evaluateStep(intermediate_points, t);
+      res = intermediate_points[0];
+    return res;
   }
 
   /**
@@ -56,7 +96,14 @@ namespace CGL
   Vector3D BezierPatch::evaluate(double u, double v) const 
   {  
     // TODO Part 2.
-    return Vector3D();
+      std::vector<Vector3D> intermediate_points = {};
+      int n = controlPoints.size(); // get size (n) for our points
+      for (int i = 0; i < n; i++)
+      {
+          intermediate_points.push_back(evaluate1D(controlPoints[i], u));
+      }
+
+    return evaluate1D(intermediate_points, v);
   }
 
   Vector3D Vertex::normal( void ) const
