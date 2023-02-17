@@ -171,10 +171,16 @@
 <h3 align="middle">Part 3: Area-Weighted Vertex Normals</h3>
 
 <b>
-  Briefly explain how you implemented the area-weighted vertex normals.
+    Briefly explain how you implemented the area-weighted vertex normals.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    We inplemented Area-Weighted Vertex Normals in the following methods:
+    First, we iterated through faces incident to a vertex. This was finished by finding the vertexs next to the given vertex. And in the found vertex, we utilized the given vertex
+    and two continuous found vertexs to calculate the faces' normals by doing the cross product of the two vectors. Then we calculated the meshes' areas and weighted the faces' normals.
+    There are many ways to calculate the area of a given triangle: The brutal force is to use <b>helen formula</b> to calculate the area directly or we can compute
+   <b>the dot product of the surface normal and a vector pointing from the vertex to the center of the face.</b>
+    The dot product gives the cosine of the angle between the surface normal and the vector,
+    so the absolute value of the dot product gives the weight of the face. We finished both methods and both methods produce the same results.
 </p>
 <br>
 
@@ -182,9 +188,11 @@
 <b>
   Show screenshots of dae/teapot.dae (not .bez) comparing teapot shading with and without vertex normals. Use <kbd>Q</kbd> to toggle default flat shading and Phong shading.
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
+<!-- Example of including a single figure -->
+<div align="middle">
+    <img src="images/p3/res.png" align="middle" width="50%" />
+    <figcaption>Our generated teapot with smoother surface</figcaption>
+</div>
 <br>
 
 
@@ -193,17 +201,41 @@
   Briefly explain how you implemented the edge flip operation and describe any interesting implementation / debugging tricks you have used.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    Here is how we implemented the edge flip: The biggest difficulties for this part is to manage the pointer of halfedges, vertexs, edges and faces.
+    So we chose to get all these member firstly and manually assigned the pointers of each elements. We utilized the given function <b>setNeighbors()</b>
+    to help us. Notice that this function can help us set all the members of the halfedge (even some of the elements do not need to change).
+    After doing this, we can get a correct edge flip algorithm. We also attach sample picture to illustrate how to assigne the elements and pointers
+    for each meshes' elements:
+
 </p>
+
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="images/p4/origin.png" align="middle" width="400px"/>
+        <figcaption>original meshes</figcaption>
+      </td>
+      <td>
+        <img src="images/p4/after.png" align="middle" width="400px"/>
+        <figcaption>after operation</figcaption>
+      </td>
+    </tr>
+    </table>
+</div>
 <br>
 
 
 <b>
   Show screenshots of the teapot before and after some edge flips.
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
+    <p>
+        we have created a diamond by using the edge split algorithm in the center of the teapot.
+    </p>
+<div align="middle">
+    <img src="images/p4/res.png" align="middle" width="50%" />
+    <figcaption>Our generated teapot with edge flip</figcaption>
+</div>
 <br>
 
 
@@ -211,7 +243,9 @@
     Write about your eventful debugging journey, if you have experienced one.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    Following the instructions that we drew for ourselves, fortunately we did not have some bugs. But one thing we want to mention is that
+    before writing codes, read <b>halfEdgeMesh.h</b> slowly and carefully. It will help a lot if you have a better understanding of the data structure and 
+    also help you avoid bugs!
 </p>
 <br>
 
@@ -221,16 +255,46 @@
   Briefly explain how you implemented the edge split operation and describe any interesting implementation / debugging tricks you have used.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    Here is how we implemented the edge split: Like edge flip, the biggest difficulties for this part is to manage the pointer of halfedges, vertexs, edges and faces.
+    This is a little bit more difficult than edge flip because edge split create several new elements: a new vertex, three edges and two faces.
+    It is very helpful to first draw a sample picture to help us with the pointers' assignment. We also utilized the given function <b>setNeighbors()</b>
+    to help us in this part. After doing this, we can get a correct edge split algorithm. We also attach sample picture to illustrate how to assigne the elements and pointers
+    for each meshes' elements:
 </p>
 <br>
-
+<div align="middle">
+    <table style="width:100%">
+        <tr align="center">
+            <td>
+                <img src="images/p5/origin.png" align="middle" width="400px" />
+                <figcaption>original meshes</figcaption>
+            </td>
+            <td>
+                <img src="images/p5/after.png" align="middle" width="400px" />
+                <figcaption>after operation</figcaption>
+            </td>
+        </tr>
+    </table>
+</div>
 
 <b>
     Show screenshots of a mesh before and after some edge splits. 
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    <div align="middle">
+        <table style="width:100%">
+            <tr align="center">
+                <td>
+                    <img src="images/p5/origin1.png" align="middle" width="400px" />
+                    <figcaption>original meshes</figcaption>
+                </td>
+                <td>
+                    <img src="images/p5/res1.png" align="middle" width="400px" />
+                    <figcaption>after operation</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
 </p>
 <br>
 
@@ -239,8 +303,23 @@
     Show screenshots of a mesh before and after a combination of both edge splits and edge flips.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    We used flip and split algorithms to create a diamond and draw a flower in its center.
+
 </p>
+    <div align="middle">
+        <table style="width:100%">
+            <tr align="center">
+                <td>
+                    <img src="images/p5/origin2.png" align="middle" width="400px" />
+                    <figcaption>original meshes</figcaption>
+                </td>
+                <td>
+                    <img src="images/p5/res2.png" align="middle" width="400px" />
+                    <figcaption>after operation</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
 <br>
 
 
@@ -248,17 +327,11 @@
     Write about your eventful debugging journey, if you have experienced one.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    Luckily, we just experienced one small bug during our coding. This comes from the wrong pointer assignment, which induces that when we select a generated edge to do split again,
+    it may run edge split on another generated edge. We checked our pointers carefully and finally fixed this small bug.
 </p>
 <br>
 
-
-<b>
-    If you have implemented support for boundary edges, show screenshots of your implementation properly handling split operations on boundary edges.
-</b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
 <br>
 
 
