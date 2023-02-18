@@ -330,6 +330,48 @@ namespace CGL
     // 4. Flip any new edge that connects an old and new vertex.
 
     // 5. Copy the new vertex positions into final Vertex::position.
+      for (VertexIter v = mesh.verticesBegin(); v != mesh.verticesEnd(); v++) {
+          v->isNew = false;
+          int n = v->degree();
+          double u = (n == 3) ? 0.1875 : 0.375 / n;
+          v->newPosition = v->position * (1. - n * u);
+          HalfedgeCIter h = v->halfedge();
+          do {
+              v->newPosition += u * (h->next()->vertex()->position);
+              h = h->twin()->next();
+          } while (h != v->halfedge());
+
+      }
+
+      for (EdgeIter e = mesh.edgesBegin(); e != mesh.edgesEnd(); e++) {
+          HalfedgeCIter h = e->halfedge();
+          e->newPosition =
+              0.375 * h->vertex()->position +
+              0.375 * h->twin()->vertex()->position +
+              0.125 * h->next()->next()->vertex()->position +
+              0.125 * h->twin()->next()->next()->vertex()->position;
+      }
+
+      int nEdges = mesh.nEdges();
+      EdgeIter e = mesh.edgesBegin();
+      for (int i = 0; i < nEdges; i++) {
+          VertexIter m = mesh.splitEdge(e);
+          m->newPosition = e->newPosition;
+          m->isNew = true;
+          e++;
+      }
+
+      for (EdgeIter e = mesh.edgesBegin(); e != mesh.edgesEnd(); e++) {
+          VertexIter v1 = e->halfedge()->vertex();
+          VertexIter v2 = e->halfedge()->twin()->vertex();
+          if (e->isNew && (v1->isNew != v2->isNew)) {
+              mesh.flipEdge(e);
+          }
+      }
+
+      for (VertexIter v = mesh.verticesBegin(); v != mesh.verticesEnd(); v++) {
+          v->position = v->newPosition;
+      }
 
   }
 }

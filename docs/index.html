@@ -48,8 +48,10 @@
 <div>
 
 <h2 align="middle">Overview</h2>
-<p>
-    YOUR RESPONSE GOES HERE
+<p style="line-height:200%">
+    In this project, we revised Bezier Curves and Surfaces and we had a better understanding of de Casteljau's algorithm. For the second part, we gained valuable experience on 
+    how to operate on half-edge data structures and also acquire the ability to write simple meshes operation algorithms: flip, split and subdivision. It is fancy and interesting to 
+    utilize these functions created on our own to operate on a mesh to observe its change.
 </p>
 <br>
 
@@ -62,7 +64,7 @@
 <b>
   Briefly explain de Casteljau's algorithm and how you implemented it in order to evaluate Bezier curves.
 </b>
-<p>
+<p style="line-height:200%">
     A Bezier curve is a parametric curve that is defined by a set of control points.
     By creating a blending function, we can create the Bezier curve by utilizing the given control points.
     De Casteljau's algorithm is a recursive algorithm used to evaluate Bezier curves.
@@ -143,7 +145,7 @@
 <b>
   Briefly explain how de Casteljau algorithm extends to Bezier surfaces and how you implemented it in order to evaluate Bezier surfaces.
 </b>
-<p>
+<p style="line-height:200%">
     The algorithm for evaluating a Bezier surface is similar to the algorithm for evaluating a Bezier curve.
     The main difference is that instead of linearly blending between adjacent control points,
     we blend between control points along both the u and v directions of the surface. That means we first do one dimension Bezier curve
@@ -173,7 +175,7 @@
 <b>
     Briefly explain how you implemented the area-weighted vertex normals.
 </b>
-<p>
+<p style="line-height:200%">
     We inplemented Area-Weighted Vertex Normals in the following methods:
     First, we iterated through faces incident to a vertex. This was finished by finding the vertexs next to the given vertex. And in the found vertex, we utilized the given vertex
     and two continuous found vertexs to calculate the faces' normals by doing the cross product of the two vectors. Then we calculated the meshes' areas and weighted the faces' normals.
@@ -200,7 +202,7 @@
 <b>
   Briefly explain how you implemented the edge flip operation and describe any interesting implementation / debugging tricks you have used.
 </b>
-<p>
+<p style="line-height:200%">
     Here is how we implemented the edge flip: The biggest difficulties for this part is to manage the pointer of halfedges, vertexs, edges and faces.
     So we chose to get all these member firstly and manually assigned the pointers of each elements. We utilized the given function <b>setNeighbors()</b>
     to help us. Notice that this function can help us set all the members of the halfedge (even some of the elements do not need to change).
@@ -242,7 +244,7 @@
 <b>
     Write about your eventful debugging journey, if you have experienced one.
 </b>
-<p>
+<p style="line-height:200%">
     Following the instructions that we drew for ourselves, fortunately we did not have some bugs. But one thing we want to mention is that
     before writing codes, read <b>halfEdgeMesh.h</b> slowly and carefully. It will help a lot if you have a better understanding of the data structure and 
     also help you avoid bugs!
@@ -254,7 +256,7 @@
 <b>
   Briefly explain how you implemented the edge split operation and describe any interesting implementation / debugging tricks you have used.
 </b>
-<p>
+<p style="line-height:200%">
     Here is how we implemented the edge split: Like edge flip, the biggest difficulties for this part is to manage the pointer of halfedges, vertexs, edges and faces.
     This is a little bit more difficult than edge flip because edge split create several new elements: a new vertex, three edges and two faces.
     It is very helpful to first draw a sample picture to help us with the pointers' assignment. We also utilized the given function <b>setNeighbors()</b>
@@ -326,7 +328,7 @@
 <b>
     Write about your eventful debugging journey, if you have experienced one.
 </b>
-<p>
+<p style="line-height:200%">
     Luckily, we just experienced one small bug during our coding. This comes from the wrong pointer assignment, which induces that when we select a generated edge to do split again,
     it may run edge split on another generated edge. We checked our pointers carefully and finally fixed this small bug.
 </p>
@@ -339,8 +341,14 @@
 <b>
   Briefly explain how you implemented the loop subdivision and describe any interesting implementation / debugging tricks you have used.
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
+<p style="line-height:200%">
+    Here is how we implemented the loop subdivision: First, we need to modify our split algorithm and add whether new judgement to the generated 4 edges.
+    This is important but simple. Then, we computed the new position of existing vertexs and stored the location in the member <b>newPosition</b>.
+    Following last step, we calculated the position of new vertexs and stored them into the member  <b>newPosition</b> of each edge. Then we did the
+    edge split algorithm. It is very important that we can not simply use <b>EdgeIter</b> to iterate from the <b>edgesBegin()</b> to the <b>edgesEnd()</b>.
+    Because during splitting, we also added new edges into our mesh, this will bring bug. There are several ways to solve this problem: We can get the edge_number
+    and iterate in the original edgenumber. That will fix this bug. Finally we applied edge flip algorithm to the edges where the edges connect an old vertex and new vertex.
+
 </p>
 <br>
 
@@ -349,7 +357,60 @@
   Take some notes, as well as some screenshots, of your observations on how meshes behave after loop subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some edges?
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    <ul>
+        <li style="line-height:200%">Loop subdivision can greatly improve the smoothness of a mesh, making it look more realistic and organic. This is because it adds more vertices and polygons to the mesh, allowing for more detail and curvature.</li>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/p6/origin0.png" align="middle" width="400px" />
+                        <figcaption>original meshes</figcaption>
+                    </td>
+                    <td>
+                        <img src="images/p6/res0.png" align="middle" width="400px" />
+                        <figcaption>after operation</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <li style="line-height:200%">
+            Sharp corners and edges tend to become rounded out after loop subdivision, as the vertices that define them get moved around to create a smoother surface.
+            This can be a disadvantage if we want to retain sharp edges for the final mesh, such as we still want a rectangle, but more detailed.
+        </li>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/p6/origin1.png" align="middle" width="400px" />
+                        <figcaption>original meshes</figcaption>
+                    </td>
+                    <td>
+                        <img src="images/p6/res1.png" align="middle" width="400px" />
+                        <figcaption>after operation</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <li style="line-height:200%">
+            Pre-splitting some edges can reduce the effect of loop subdivision on sharp corners and edges. By creating additional edges near the sharp features of the mesh,
+            we can give loop subdivision more vertices to work with in those areas, which can help maintain sharp edges and corners. You can see the following picture as an example:
+            after splitting the edge near up-right corner, we can get a sharper corner at that place.
+        </li>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/p6/origin2.png" align="middle" width="400px" />
+                        <figcaption>original meshes</figcaption>
+                    </td>
+                    <td>
+                        <img src="images/p6/res2.png" align="middle" width="400px" />
+                        <figcaption>after operation</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </ul>
 </p>
 <br>
 
@@ -357,19 +418,38 @@
 <b>
   Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice that the cube becomes slightly asymmetric after repeated subdivisions. Can you pre-process the cube with edge flips and splits so that the cube subdivides symmetrically? Document these effects and explain why they occur. Also explain how your pre-processing helps alleviate the effects.
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
+<p style="line-height:200%">
+    To pre-process the cube for symmetric subdivision, we can apply a series of edge flips and splits to create a more balanced mesh.
+    For the cube case, we just need to flip the diagonal lines on six faces of this cube. Before operating, the mesh itself is not symmetric cause every face
+    just have one diagonal line. After edge splitting, the mesh becomes more balanced so it can still be symmetric after loop subdivision.
 </p>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/p6/origin3.png" align="middle" width="400px" />
+                        <figcaption>original meshes</figcaption>
+                    </td>
+                    <td>
+                        <img src="images/p6/res3.png" align="middle" width="400px" />
+                        <figcaption>after operation (subdivision 2 times)</figcaption>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td>
+                        <img src="images/p6/origin4.png" align="middle" width="400px" />
+                        <figcaption>original meshes after splitting</figcaption>
+                    </td>
+                    <td>
+                        <img src="images/p6/res4.png" align="middle" width="400px" />
+                        <figcaption>after operation (subdivision 2 times) </figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
 <br>
 
 
-<b>
-    If you have implemented any extra credit extensions, explain what you did and document how they work with screenshots.
-</b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
-<br>
 
 
 <h3 align="middle">Part 7 (Optional, Possible Extra Credit)</h3>
