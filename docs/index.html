@@ -18,6 +18,11 @@
   kbd {
     color: #121212;
   }
+    @media print {
+        .page-break {
+            page-break-before: always;
+        }
+    }
 </style>
 <title>CS 184 Mesh Edit</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -49,9 +54,10 @@
 
 <h2 align="middle">Overview</h2>
 <p style="line-height:200%">
-    In this project, we revised Bezier Curves and Surfaces and we had a better understanding of de Casteljau's algorithm. For the second part, we gained valuable experience on 
-    how to operate on half-edge data structures and also acquire the ability to write simple meshes operation algorithms: flip, split and subdivision. It is fancy and interesting to 
-    utilize these functions created on our own to operate on a mesh to observe its change.
+    The whole project is divided into two parts. For the first part, we revised Bezier Curves and Surfaces, and we had a better understanding of 
+    de Casteljau's algorithm. And for the second, we acquired valuable experience on 
+    how to operate on half-edge data structures and also gain the ability to write simple meshes operation algorithms: flip, split and subdivision. It is fancy and interesting to 
+    utilize these functions that were coded by ourselves to operate on a mesh, and to observe its change.
 </p>
 <br>
 
@@ -69,7 +75,7 @@
     By creating a blending function, we can create the Bezier curve by utilizing the given control points.
     De Casteljau's algorithm is a recursive algorithm used to evaluate Bezier curves.
     The de Casteljau's algorithm works by calculating the next step's control points of the curve by a certain point t [0 - 1].
-    This is done recursively until we just get our final single points.
+    This is done recursively until we just get our final single point.
     The end result is the point on the Bezier curve that corresponds to the parameter t.
     In this assignment, we implement a function named <b>evaluateStep</b>. The function's initial parameters are  a set of control points
     and a value of t. We can then split the control points into two groups at t and apply the algorithm recursively to each group.
@@ -139,9 +145,7 @@
 </div>
 <br> 
 <br>
-
-
-<h3 align="middle">Part 2: Bezier Surfaces with Separable 1D de Casteljau</h3>
+<h3 align="middle" class="page-break">Part 2: Bezier Surfaces with Separable 1D de Casteljau</h3>
 <b>
   Briefly explain how de Casteljau algorithm extends to Bezier surfaces and how you implemented it in order to evaluate Bezier surfaces.
 </b>
@@ -168,7 +172,7 @@
 <br>
 
 
-<h2 align="middle">Section II: Triangle Meshes and Half-Edge Data Structure</h2>
+<h2 align="middle" class="page-break">Section II: Triangle Meshes and Half-Edge Data Structure</h2>
 
 <h3 align="middle">Part 3: Area-Weighted Vertex Normals</h3>
 
@@ -198,16 +202,16 @@
 <br>
 
 
-<h3 align="middle">Part 4: Edge Flip</h3>
+<h3 align="middle" class="page-break">Part 4: Edge Flip</h3>
 <b>
   Briefly explain how you implemented the edge flip operation and describe any interesting implementation / debugging tricks you have used.
 </b>
 <p style="line-height:200%">
     Here is how we implemented the edge flip: The biggest difficulties for this part is to manage the pointer of halfedges, vertexs, edges and faces.
-    So we chose to get all these member firstly and manually assigned the pointers of each elements. We utilized the given function <b>setNeighbors()</b>
+    So we chose to get all these members firstly and manually assigned the pointers of each elements. We utilized the given function <b>setNeighbors()</b>
     to help us. Notice that this function can help us set all the members of the halfedge (even some of the elements do not need to change).
-    After doing this, we can get a correct edge flip algorithm. We also attach sample picture to illustrate how to assigne the elements and pointers
-    for each meshes' elements:
+    After doing this, we can get a correct edge flip algorithm. We also attach sample pictures to illustrate how to assign the elements and pointers
+    for each mesh's elements:
 
 </p>
 
@@ -252,16 +256,16 @@
 <br>
 
 
-<h3 align="middle">Part 5: Edge Split</h3>
+<h3 align="middle" class="page-break">Part 5: Edge Split</h3>
 <b>
   Briefly explain how you implemented the edge split operation and describe any interesting implementation / debugging tricks you have used.
 </b>
 <p style="line-height:200%">
     Here is how we implemented the edge split: Like edge flip, the biggest difficulties for this part is to manage the pointer of halfedges, vertexs, edges and faces.
-    This is a little bit more difficult than edge flip because edge split create several new elements: a new vertex, three edges and two faces.
+    This is a little bit more difficult than edge flip because edge split creates several new elements: a new vertex, three edges, two faces etc.
     It is very helpful to first draw a sample picture to help us with the pointers' assignment. We also utilized the given function <b>setNeighbors()</b>
-    to help us in this part. After doing this, we can get a correct edge split algorithm. We also attach sample picture to illustrate how to assigne the elements and pointers
-    for each meshes' elements:
+    to help us in this part. After doing this, we can get a correct edge split algorithm. We also attach sample pictures to illustrate how to assign the elements and pointers
+    for each mesh's elements:
 </p>
 <br>
 <div align="middle">
@@ -337,7 +341,7 @@
 <br>
 
 
-<h3 align="middle">Part 6: Loop Subdivision for Mesh Upsampling</h3>
+<h3 align="middle" class="page-break">Part 6: Loop Subdivision for Mesh Upsampling</h3>
 <b>
   Briefly explain how you implemented the loop subdivision and describe any interesting implementation / debugging tricks you have used.
 </b>
@@ -420,8 +424,9 @@
 </b>
 <p style="line-height:200%">
     To pre-process the cube for symmetric subdivision, we can apply a series of edge flips and splits to create a more balanced mesh.
-    For the cube case, we just need to flip the diagonal lines on six faces of this cube. Before operating, the mesh itself is not symmetric cause every face
-    just have one diagonal line. After edge splitting, the mesh becomes more balanced so it can still be symmetric after loop subdivision.
+    For the cube case, we just need to create the second diagonal lines on six faces of this cube. This can simply done by 
+    using edge split algorithm. Before operating, every face just has one diagonal line which brings unsymmetric property to the orginal mesh. 
+    After edge-splitting, the mesh becomes more balanced so it can still be symmetric after loop subdivision.
 </p>
         <div align="middle">
             <table style="width:100%">
@@ -449,35 +454,6 @@
         </div>
 <br>
 
-
-
-
-<h3 align="middle">Part 7 (Optional, Possible Extra Credit)</h3>
-<b>
-    Save your best polygon mesh as partsevenmodel.dae in your docs folder and show us a screenshot of the mesh in your write-up.
-</b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
-<br>
-
-
-<b>
-    Include a series of screenshots showing your original mesh and your mesh after one and two rounds of subdivision. If you have used custom shaders, include screenshots of your mesh with those shaders applied as well.
-</b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
-<br>
-
-
-<b>
-    Describe what you have done to enhance your mesh beyond the simple humanoid mesh described in the tutorial.
-</b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
-<br>
 
 
 </body>
